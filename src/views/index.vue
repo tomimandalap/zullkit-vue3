@@ -1,6 +1,34 @@
 <script setup>
-import TopCategory from '@/components/topcategory.vue'
+import CardTop from '@/components/cardtopcategory.vue'
 import NewItems from '@/components/newitems.vue'
+import { ref } from 'vue'
+
+const topitems = ref([
+  {
+    id: 1,
+    image: 'categories-1.jpg',
+    title: 'Mobile UI Kit',
+    point: 731,
+  },
+  {
+    id: 2,
+    image: 'categories-2.jpg',
+    title: 'Fonts',
+    point: 657,
+  },
+  {
+    id: 3,
+    image: 'categories-3.jpg',
+    title: 'Icon Set',
+    point: 83559,
+  },
+  {
+    id: 4,
+    image: 'categories-4.jpg',
+    title: 'Website UI Kit',
+    point: 4500,
+  },
+])
 </script>
 
 <template>
@@ -51,6 +79,18 @@ import NewItems from '@/components/newitems.vue'
     </div>
   </div>
 
-  <TopCategory />
+  <div class="container px-4 mx-auto my-16 md:px-12">
+    <h2 class="mb-4 text-xl font-medium md:mb-0 md:text-lg">Top Categories</h2>
+    <div class="flex flex-wrap -mx-1 lg:-mx-4">
+      <div
+        v-for="(list, i) in topitems"
+        :key="i"
+        class="w-full px-1 my-1 md:w-1/2 lg:my-4 lg:px-4 lg:w-1/4"
+      >
+        <CardTop :image="list.image" :title="list.title" :point="list.point" />
+      </div>
+    </div>
+  </div>
+
   <NewItems />
 </template>
