@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import defaultLayout from '../layouts/default.vue'
+import defaultWeb from '../layouts/web.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,13 +12,51 @@ const router = createRouter({
       children: [
         {
           path: '',
-          name: 'Home',
-          component: () => import('../views/index.vue'),
+          beforeEnter: (to, from, next) => {
+            next('/web')
+          },
+        },
+        {
+          path: 'login',
+          name: 'Login',
+          component: () => import('../views/login.vue'),
+        },
+        {
+          path: 'register',
+          name: 'Register',
+          component: () => import('../views/register.vue'),
         },
         {
           path: '404',
           name: '404',
           component: () => import('../views/404.vue'),
+        },
+      ],
+    },
+    {
+      path: '/web',
+      name: 'LayoutWeb',
+      component: defaultWeb,
+      children: [
+        {
+          path: '',
+          name: 'Home',
+          component: () => import('../views/index.vue'),
+        },
+        {
+          path: 'categories',
+          name: 'Categories',
+          component: () => import('../views/categories.vue'),
+        },
+        {
+          path: 'pricing',
+          name: 'Pricing',
+          component: () => import('../views/pricing.vue'),
+        },
+        {
+          path: 'study-case',
+          name: 'Study Case',
+          component: () => import('../views/study-case.vue'),
         },
       ],
     },
