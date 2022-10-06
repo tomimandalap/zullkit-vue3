@@ -1,17 +1,51 @@
 <script setup>
-import { onMounted, onUpdated, ref } from 'vue'
+import { onMounted, onUpdated, ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import mixins from '@/utils/menu'
+import { useUserStore } from '@/stores/user'
+import { createToaster } from '@meforma/vue-toaster'
+
+// mixins
+const { listMenu } = mixins.data()
+
+// declarations
 const route = useRoute()
 const namePath = ref('')
-const { listMenu } = mixins.data()
+const userStore = useUserStore()
+const toaster = createToaster({
+  position: 'top-right',
+})
+
+// computed
+const user = computed(() => userStore.user)
+const alert_show = computed(() => userStore.alert_show)
+const alert_title = computed(() => userStore.alert_title)
+const alert_message = computed(() => userStore.alert_message)
+
+// watch
+watch(alert_show, (val) => {
+  if (val) {
+    toaster.error(`[${alert_title.value}] <br/> ${alert_message.value}`)
+  }
+})
+
+// methods
+const load = async () => {
+  const { path } = route
+  namePath.value = path
+
+  await userStore.fetchUser()
+}
+
+// updated
 onUpdated(() => {
   const { path } = route
   namePath.value = path
 })
+
+// mounted
 onMounted(() => {
-  const { path } = route
-  namePath.value = path
+  load()
 })
 </script>
 
@@ -56,6 +90,7 @@ onMounted(() => {
 
         <div class="md:order-2 md:block hidden">
           <RouterLink
+            v-if="!user"
             to="/login"
             class="px-8 py-2 mt-2 mr-2 md:text-base text-sm font-medium text-black bg-gray-200 border border-transparent rounded-full hover:bg-gray-300 md:py-2 md:text-sm md:px-8 hover:shadow"
           >
@@ -63,12 +98,14 @@ onMounted(() => {
           </RouterLink>
 
           <RouterLink
+            v-if="!user"
             to="/register"
             class="px-8 py-2 md:text-base text-sm font-medium text-white border border-transparent rounded-full bg-navy hover:bg-navy md:py-2 md:text-sm md:px-8 hover:shadow"
           >
             Sign Up
           </RouterLink>
-          <!-- <div class="flex items-center justify-center space-x-4">
+
+          <div v-if="user" class="flex items-center justify-center space-x-4">
             <div class="font-medium dark:text-white">
               <div>Tomi Mandala Putra</div>
             </div>
@@ -77,7 +114,7 @@ onMounted(() => {
             >
               TM
             </div>
-          </div> -->
+          </div>
         </div>
 
         <div
