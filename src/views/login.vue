@@ -1,3 +1,13 @@
+<script setup>
+import { ref } from 'vue'
+const form = ref({
+  email: '',
+  password: '',
+})
+const handleSubmit = () => {
+  console.log('THIS', form.value)
+}
+</script>
 <template>
   <div>
     <nav
@@ -25,10 +35,11 @@
             <h2 class="mb-20 sm:text-5xl text-4xl font-bold text-center">
               Welcome Back
             </h2>
-            <form>
+            <form @submit.prevent="handleSubmit">
               <div class="mb-4">
                 <label class="block mb-1" for="email">Email Address</label>
                 <input
+                  v-model="form.email"
                   placeholder="Type your email"
                   id="email"
                   type="text"
@@ -39,6 +50,7 @@
               <div class="mb-4">
                 <label class="block mb-1" for="password">Password</label>
                 <input
+                  v-model="form.password"
                   placeholder="Type your password"
                   id="password"
                   type="password"
@@ -48,7 +60,7 @@
               </div>
               <div class="mt-6">
                 <button
-                  type="button"
+                  type="submit"
                   class="inline-flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-full hover:bg-indigo-700 md:py-2 md:text-lg md:px-10 hover:shadow"
                 >
                   Sign In

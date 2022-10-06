@@ -1,3 +1,15 @@
+<script setup>
+import { ref } from 'vue'
+const form = ref({
+  name: '',
+  email: '',
+  password: '',
+})
+
+const handleSubmit = () => {
+  console.log('THIS', form.value)
+}
+</script>
 <template>
   <div>
     <nav
@@ -31,38 +43,11 @@
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
               <div class="mx-auto md:mx-0 md:block hidden">
                 <div class="mb-12">
-                  <div class="block mb-2">
-                    <svg
-                      width="45"
-                      height="45"
-                      viewBox="0 0 60 60"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="inline align-middle"
-                    >
-                      <circle cx="30" cy="30" r="30" fill="#642DFB" />
-                      <path
-                        d="M20 35L30 40L40 35"
-                        stroke="white"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M20 30L30 35L40 30"
-                        stroke="white"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M30 20L20 25L30 30L40 25L30 20Z"
-                        stroke="white"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
+                  <div class="flex items-center mb-2">
+                    <img
+                      src="@/assets/img/icon-customizable.svg"
+                      alt="icon-customizable"
+                    />
                     <h3 class="inline-block ml-2 text-lg font-semibold">
                       Customizable
                     </h3>
@@ -74,31 +59,11 @@
                   </p>
                 </div>
                 <div class="mb-12">
-                  <div class="block mb-2">
-                    <svg
-                      width="45"
-                      height="45"
-                      viewBox="0 0 60 60"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="inline align-middle"
-                    >
-                      <circle cx="30" cy="30" r="30" fill="#1BA37A" />
-                      <path
-                        d="M30 33C33.866 33 37 29.866 37 26C37 22.134 33.866 19 30 19C26.134 19 23 22.134 23 26C23 29.866 26.134 33 30 33Z"
-                        stroke="white"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M26.21 31.89L25 41L30 38L35 41L33.79 31.88"
-                        stroke="white"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
+                  <div class="flex items-center mb-2">
+                    <img
+                      src="@/assets/img/icon-fortune.svg"
+                      alt="icon-fortune"
+                    />
                     <h3 class="inline-block ml-2 text-lg font-semibold">
                       500 Fortune
                     </h3>
@@ -110,32 +75,8 @@
                   </p>
                 </div>
                 <div class="mb-12">
-                  <div class="block mb-2">
-                    <svg
-                      width="45"
-                      height="45"
-                      viewBox="0 0 60 60"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="inline align-middle"
-                    >
-                      <circle cx="30" cy="30" r="30" fill="#FF6D90" />
-                      <path
-                        d="M40 21H34C32.9391 21 31.9217 21.4214 31.1716 22.1716C30.4214 22.9217 30 23.9391 30 25V39C30 38.2044 30.3161 37.4413 30.8787 36.8787C31.4413 36.3161 32.2044 36 33 36H40V21Z"
-                        stroke="white"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                      <path
-                        d="M20 21H26C27.0609 21 28.0783 21.4214 28.8284 22.1716C29.5786 22.9217 30 23.9391 30 25V39C30 38.2044 29.6839 37.4413 29.1213 36.8787C28.5587 36.3161 27.7956 36 27 36H20V21Z"
-                        stroke="white"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-
+                  <div class="flex items-center mb-2">
+                    <img src="@/assets/img/icon-book.svg" alt="icon-book" />
                     <h3 class="inline-block ml-2 text-lg font-semibold">
                       Documentation
                     </h3>
@@ -149,10 +90,11 @@
               </div>
 
               <div>
-                <form>
+                <form @submit.prevent="handleSubmit">
                   <div class="mb-4">
                     <label class="block mb-1" for="name">Name</label>
                     <input
+                      v-model="form.name"
                       placeholder="Type your full name"
                       id="name"
                       type="text"
@@ -163,6 +105,7 @@
                   <div class="mb-4">
                     <label class="block mb-1" for="email">Email Address</label>
                     <input
+                      v-model="form.email"
                       placeholder="Type your email"
                       id="email"
                       type="text"
@@ -173,6 +116,7 @@
                   <div class="mb-4">
                     <label class="block mb-1" for="password">Password</label>
                     <input
+                      v-model="form.password"
                       placeholder="Type your password"
                       id="password"
                       type="password"
@@ -182,7 +126,7 @@
                   </div>
                   <div class="mt-6">
                     <button
-                      type="button"
+                      type="submit"
                       class="inline-flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-full hover:bg-indigo-700 md:py-2 md:text-lg md:px-10 hover:shadow"
                     >
                       Continue Sign Up
