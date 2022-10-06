@@ -7,7 +7,6 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'LayoutDefault',
       component: defaultLayout,
       children: [
         {
@@ -35,7 +34,6 @@ const router = createRouter({
     },
     {
       path: '/web',
-      name: 'LayoutWeb',
       component: defaultWeb,
       children: [
         {
