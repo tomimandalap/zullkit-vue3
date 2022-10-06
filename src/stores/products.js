@@ -4,15 +4,15 @@ export const useProductsStore = defineStore({
   id: 'products',
   state: () => ({
     data_category: [],
-    data_detail: {},
+    category_detail: {},
     data_product: [],
     alert_show: false,
     alert_title: '',
     alert_message: '',
   }),
   getters: {
-    name_item: (state) => state.data_detail.name,
-    product_item: (state) => state.data_detail.products,
+    name_item: (state) => state.category_detail.name,
+    product_item: (state) => state.category_detail.products,
   },
   actions: {
     getCategory(params) {
@@ -22,7 +22,7 @@ export const useProductsStore = defineStore({
           const result = res.data.data?.data
 
           if (result) this.data_category = result
-          else this.data_detail = res.data.data
+          else this.category_detail = res.data.data
 
           return true
         })

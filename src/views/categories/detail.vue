@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, computed, watch, ref } from 'vue'
 import { useProductsStore } from '@/stores/products'
+import { createToaster } from '@meforma/vue-toaster'
 import { useRoute } from 'vue-router'
 
 // components
@@ -10,7 +11,9 @@ import Carditem from '@/components/carditem.vue'
 const route = useRoute()
 const id = ref(null)
 const productsStore = useProductsStore()
-const data_product = []
+const toaster = createToaster({
+  position: 'top-right',
+})
 
 const params = {
   id: null,
@@ -20,6 +23,16 @@ const params = {
 // computed
 const name_item = computed(() => productsStore.name_item)
 const product_item = computed(() => productsStore.product_item)
+const alert_show = computed(() => productsStore.alert_show)
+const alert_title = computed(() => productsStore.alert_title)
+const alert_message = computed(() => productsStore.alert_message)
+
+// watch
+watch(alert_show, (val) => {
+  if (val) {
+    toaster.error(`[${alert_title.value}] <br/> ${alert_message.value}`)
+  }
+})
 
 // methods
 const load = async () => {
