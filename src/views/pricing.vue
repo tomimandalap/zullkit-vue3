@@ -10,7 +10,7 @@ const checkout = (price) => {
         <div
           class="flex flex-col items-center w-full sm:justify-center sm:pt-0"
         >
-          <div class="w-full p-5 mx-auto mt-10 md:max-w-7xl">
+          <div data-aos="fade-up" class="w-full p-5 mx-auto mt-10 md:max-w-7xl">
             <h2 class="mb-4 text-5xl font-bold text-center">
               <span class="block lg:mb-2">Friendly Pricing,</span>
               <span class="block">High Quality Design</span>
@@ -19,7 +19,8 @@ const checkout = (price) => {
               Working faster and better than before
             </p>
           </div>
-          <div class="w-full p-5 mx-auto mb-10 md:max-w-4xl">
+
+          <div data-aos="fade-up" class="w-full p-5 mx-auto mb-10 md:max-w-4xl">
             <div class="grid grid-cols-1 gap-12 md:grid-cols-2">
               <div>
                 <div class="p-8 border rounded-3xl">
@@ -157,7 +158,8 @@ const checkout = (price) => {
               </div>
             </div>
           </div>
-          <div class="w-full p-5 mx-auto mb-10 md:max-w-7xl">
+
+          <div data-aos="fade-up" class="w-full p-5 mx-auto mb-10 md:max-w-7xl">
             <div class="grid grid-cols-1 gap-4 mx-auto md:grid-cols-3 md:mx-0">
               <div class="mb-12">
                 <div class="flex items-center mb-2">
