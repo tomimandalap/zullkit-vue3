@@ -12,31 +12,35 @@ export const useProductsStore = defineStore({
   getters: {},
   actions: {
     getCategory(params) {
-      axios
+      return axios
         .get(`${import.meta.env.VITE_API_ENDPOINT}/categories`, { params })
         .then((res) => {
           const result = res.data.data.data
           this.data_category = result
+          return true
         })
         .catch((err) => {
-          console.log(err.response)
+          console.error(err)
           this.alert_show = true
           this.alert_title = err.response?.status
           this.alert_message = 'Oops, Categories went wrong!'
+          return false
         })
     },
     getProducts(params) {
-      axios
+      return axios
         .get(`${import.meta.env.VITE_API_ENDPOINT}/products`, { params })
         .then((res) => {
           const result = res.data.data.data
           this.data_product = result
+          return true
         })
         .catch((err) => {
-          console.log(err.response)
+          console.error(err)
           this.alert_show = true
           this.alert_title = err.response?.status
           this.alert_message = 'Oops, Products went wrong!'
+          return false
         })
     },
   },

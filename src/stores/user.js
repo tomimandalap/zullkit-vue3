@@ -19,7 +19,7 @@ export const useUserStore = defineStore({
           // this.data_product = result
         })
         .catch((err) => {
-          console.log(err.response)
+          console.error(err)
           const code = Number(err.response?.status)
 
           if (code != 401) {
