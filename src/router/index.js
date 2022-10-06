@@ -19,16 +19,19 @@ const router = createRouter({
           path: 'login',
           name: 'Login',
           component: () => import('../views/login.vue'),
+          meta: { auth: false },
         },
         {
           path: 'register',
           name: 'Register',
           component: () => import('../views/register.vue'),
+          meta: { auth: false },
         },
         {
           path: '404',
           name: '404',
           component: () => import('../views/404.vue'),
+          meta: { auth: false },
         },
       ],
     },
@@ -40,31 +43,43 @@ const router = createRouter({
           path: '',
           name: 'Home',
           component: () => import('../views/index.vue'),
+          meta: { auth: false },
         },
         {
           path: 'categories',
           name: 'Categories',
           component: () => import('../views/categories/index.vue'),
+          meta: { auth: true },
         },
         {
           path: 'categories/:id',
           name: 'Detail',
           component: () => import('../views/categories/detail.vue'),
+          meta: { auth: true },
         },
         {
           path: 'pricing',
           name: 'Pricing',
           component: () => import('../views/pricing.vue'),
+          meta: { auth: true },
         },
         {
           path: 'study-case',
           name: 'Study Case',
           component: () => import('../views/study-case.vue'),
+          meta: { auth: true },
         },
         {
           path: 'product/:id',
           name: 'Product',
           component: () => import('../views/product/detail.vue'),
+          meta: { auth: true },
+        },
+        {
+          path: 'success',
+          name: 'Success',
+          component: () => import('../views/success.vue'),
+          meta: { auth: true },
         },
       ],
     },
@@ -79,22 +94,20 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   window.scrollTo(0, 0)
-  next()
-  // const isAuth = !!JSON.parse(localStorage.getItem('auth'))
-  // const isAdmin = to.path.includes('admin')
-  // const isLogin = to.path.includes('login')
 
-  // if (isAuth) {
-  //   if (isLogin) {
-  //     alert('Access diterima')
-  //     next({ name: 'Admin' })
-  //   } else next()
-  // } else {
-  //   if (isAdmin) {
-  //     alert('Access ditolak, silahkan login terlebih dahulu')
-  //     next({ name: 'Login' })
-  //   } else next()
-  // }
+  const { auth } = to.meta
+  const isWeb = to.path.includes('web')
+  const isToken = !!JSON.parse(localStorage.getItem('access_token'))
+
+  if (auth) {
+    if (isToken) next()
+    else next({ path: '/login' })
+  } else if (!auth) {
+    if (isToken && !isWeb) next({ path: '/web' })
+    else next()
+  } else {
+    next()
+  }
 })
 
 router.afterEach((to) => {
