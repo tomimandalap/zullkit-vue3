@@ -1,11 +1,35 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { useProductsStore } from '@/stores/products'
+
+// declarations
+const productsStore = useProductsStore()
+const thumbnail = ref('')
 const route = useRoute()
 const id = ref(null)
-onMounted(() => {
+
+// computed
+const product_detail = computed(() => productsStore.product_detail)
+const features = computed(() => productsStore.features?.split(','))
+const is_figma = computed(() => productsStore.is_figma === 1)
+const is_sketch = computed(() => productsStore.is_sketch === 1)
+
+// methods
+const load = async () => {
   const { params } = route
   id.value = Number(params?.id)
+
+  await productsStore.getProducts({ id: id.value })
+}
+
+const changeImage = (image) => {
+  thumbnail.value = image
+}
+
+// mounted
+onMounted(() => {
+  load()
 })
 </script>
 <template>
@@ -15,62 +39,41 @@ onMounted(() => {
         <h1
           class="mb-2 text-3xl font-bold leading-normal tracking-tight text-gray-900 sm:text-4xl md:text-4xl"
         >
-          RoboCrypto UI Kit
+          {{ product_detail.name }}
         </h1>
-        <p class="text-gray-500">Build your next coin startup</p>
+        <p class="text-gray-500">{{ product_detail.subtitle }}</p>
         <section id="gallery">
           <img
-            src="@/assets/img/gallery-1.png"
-            alt=""
+            :src="product_detail.thumbnails"
             class="w-full mt-6 rounded-2xl"
           />
           <div class="grid grid-cols-4 gap-4 mt-4">
-            <div class="overflow-hidden cursor-pointer rounded-2xl">
-              <img src="@/assets/img/gallery-2.png" class="w-full" alt="" />
-            </div>
-            <div
-              class="overflow-hidden cursor-pointer ring-2 ring-indigo-500 rounded-2xl"
-            >
-              <img src="@/assets/img/gallery-3.png" class="w-full" alt="" />
-            </div>
-            <div class="overflow-hidden cursor-pointer rounded-2xl">
-              <img src="@/assets/img/gallery-4.png" class="w-full" alt="" />
-            </div>
-            <div class="overflow-hidden cursor-pointer rounded-2xl">
-              <img src="@/assets/img/gallery-5.png" class="w-full" alt="" />
-            </div>
+            <template v-for="(item, i) in product_detail.galleries" :key="i">
+              <div
+                :class="[
+                  'overflow-hidden cursor-pointer rounded-2xl',
+                  {
+                    'ring-2 ring-indigo-500': thumbnail == item.url,
+                  },
+                ]"
+                @click="changeImage(item.url)"
+              >
+                <img :src="item.url" class="w-full" />
+              </div>
+            </template>
           </div>
         </section>
         <section class="" id="orders">
           <h1 class="mt-8 mb-3 text-lg font-semibold">About</h1>
           <div class="text-gray-500">
-            <p class="pb-4">
-              Sportly App UI Kit will help your Sport, Fitness, and Workout App
-              products or services. Came with modern and sporty style, you can
-              easily edit and customize all elements with components that can
-              speed up your design process.
-            </p>
-            <p class="pb-4">
-              Suitable for :
-              <br />
-              - Sport App
-              <br />
-              - Fitness & GYM App
-              <br />
-              - Workout App
-              <br />
-              - Trainer & Tracker App
-              <br />
-              - And many more
-              <br />
-            </p>
+            <p class="pb-4" v-html="product_detail.description"></p>
           </div>
         </section>
       </main>
       <aside class="w-full px-4 sm:w-1/3 md:w-1/3">
         <div class="sticky top-0 w-full pt-4 md:mt-24">
           <div class="p-6 border rounded-2xl">
-            <div class="mb-4">
+            <div v-if="is_figma" class="mb-4">
               <div class="flex mb-2">
                 <div>
                   <img src="@/assets/img/icon-figma.png" alt="" class="w-16" />
@@ -81,7 +84,7 @@ onMounted(() => {
                 </div>
               </div>
             </div>
-            <div class="mb-4">
+            <div v-if="is_sketch" class="mb-4">
               <div class="flex mb-2">
                 <div>
                   <img src="@/assets/img/icon-sketch.png" alt="" class="w-16" />
@@ -92,35 +95,11 @@ onMounted(() => {
                 </div>
               </div>
             </div>
-            <div>
+            <div v-if="features && features.length">
               <h1 class="mt-5 mb-3 font-semibold text-md">Great Features</h1>
               <ul class="mb-6 text-gray-500">
-                <li class="mb-2">
-                  Customizable layers
-                  <img
-                    src="@/assets/img/icon-check.png"
-                    class="float-right w-5 mt-1"
-                    alt=""
-                  />
-                </li>
-                <li class="mb-2">
-                  Documentation
-                  <img
-                    src="@/assets/img/icon-check.png"
-                    class="float-right w-5 mt-1"
-                    alt=""
-                  />
-                </li>
-                <li class="mb-2">
-                  Icon set design
-                  <img
-                    src="@/assets/img/icon-check.png"
-                    class="float-right w-5 mt-1"
-                    alt=""
-                  />
-                </li>
-                <li class="mb-2">
-                  Pre-built UI screens
+                <li class="mb-2" v-for="(feature, i) in features" :key="i">
+                  {{ feature }}
                   <img
                     src="@/assets/img/icon-check.png"
                     class="float-right w-5 mt-1"
@@ -129,12 +108,19 @@ onMounted(() => {
                 </li>
               </ul>
             </div>
-            <a
-              href="checkout.html"
+            <!-- <a
+              v-if="user.data.subscription.length > 0"
+              :href="item.file"
               class="inline-flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-full hover:bg-indigo-700 md:py-2 md:text-md md:px-10 hover:shadow"
             >
               Download Now
-            </a>
+            </a> -->
+            <RouterLink
+              to="/web/pricing"
+              class="inline-flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-full hover:bg-indigo-700 md:py-2 md:text-md md:px-10 hover:shadow"
+            >
+              Subscribe
+            </RouterLink>
           </div>
         </div>
       </aside>

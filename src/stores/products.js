@@ -6,6 +6,7 @@ export const useProductsStore = defineStore({
     data_category: [],
     category_detail: {},
     data_product: [],
+    product_detail: {},
     alert_show: false,
     alert_title: '',
     alert_message: '',
@@ -13,6 +14,9 @@ export const useProductsStore = defineStore({
   getters: {
     name_item: (state) => state.category_detail.name,
     product_item: (state) => state.category_detail.products,
+    features: (state) => state.product_detail.features,
+    is_figma: (state) => state.product_detail.is_figma,
+    is_sketch: (state) => state.product_detail.is_sketch,
   },
   actions: {
     getCategory(params) {
@@ -38,8 +42,10 @@ export const useProductsStore = defineStore({
       return axios
         .get(`${import.meta.env.VITE_API_ENDPOINT}/products`, { params })
         .then((res) => {
-          const result = res.data.data.data
-          this.data_product = result
+          const result = res.data.data?.data
+
+          if (result) this.data_product = result
+          else this.product_detail = res.data.data
           return true
         })
         .catch((err) => {
