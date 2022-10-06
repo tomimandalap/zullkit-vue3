@@ -1,55 +1,47 @@
 <script setup>
+import { ref, onMounted, computed, watch } from 'vue'
+import { useProductsStore } from '@/stores/products'
+import { createToaster } from '@meforma/vue-toaster'
+
+// components
 import CardTop from '@/components/cardtopcategory.vue'
 import Carditem from '@/components/carditem.vue'
-import { ref } from 'vue'
 
-const topitems = ref([
-  {
-    id: 1,
-    image: 'categories-1.jpg',
-    title: 'Mobile UI Kit',
-    point: 731,
-  },
-  {
-    id: 2,
-    image: 'categories-2.jpg',
-    title: 'Fonts',
-    point: 657,
-  },
-  {
-    id: 3,
-    image: 'categories-3.jpg',
-    title: 'Icon Set',
-    point: 83559,
-  },
-  {
-    id: 4,
-    image: 'categories-4.jpg',
-    title: 'Website UI Kit',
-    point: 4500,
-  },
-])
+// declarations
+const productsStore = useProductsStore()
+const toaster = createToaster({
+  position: 'top-right',
+})
 
-const newitem = ref([
-  {
-    id: 1,
-    image: 'items-1.jpg',
-    title: 'Mobile UI Kit',
-    category: 'Mobile UI Kit',
-  },
-  {
-    id: 2,
-    image: 'items-2.jpg',
-    title: 'Online Doctor Consultation',
-    category: 'Website UI Kit',
-  },
-  {
-    id: 3,
-    image: 'items-3.jpg',
-    title: 'Banking Crypto',
-    category: 'Mobile UI Kit',
-  },
-])
+const params = {
+  q: '',
+  limit: 4,
+}
+
+// computed
+const data_category = computed(() => productsStore.data_category)
+const data_product = computed(() => productsStore.data_product)
+const alert_show = computed(() => productsStore.alert_show)
+const alert_title = computed(() => productsStore.alert_title)
+const alert_message = computed(() => productsStore.alert_message)
+
+// watch
+watch(alert_show, (val) => {
+  if (val) {
+    toaster.error(`[${alert_title.value}] <br/> ${alert_message.value}`)
+  }
+})
+
+// methods
+const load = async () => {
+  await productsStore.getCategory(params)
+  await productsStore.getProducts(params)
+}
+
+// mounted
+onMounted(() => {
+  load()
+})
 </script>
 
 <template>
@@ -105,15 +97,15 @@ const newitem = ref([
     <h2 class="mb-4 text-xl font-medium md:mb-0 md:text-lg">Top Categories</h2>
     <div class="flex flex-wrap -mx-1 lg:-mx-4">
       <div
-        v-for="(list, i) in topitems"
+        v-for="(list, i) in data_category"
         :key="i"
         class="w-full px-1 my-1 md:w-1/2 lg:my-4 lg:px-4 lg:w-1/4"
       >
         <CardTop
           :id="list.id"
-          :image="list.image"
-          :title="list.title"
-          :point="list.point"
+          :image="list.thumbnails"
+          :title="list.name"
+          :point="list.products_count"
         />
       </div>
     </div>
@@ -123,7 +115,7 @@ const newitem = ref([
     <h2 class="mb-4 text-xl font-medium md:mb-0 md:text-lg">New Items</h2>
     <div class="flex flex-wrap -mx-1 lg:-mx-4">
       <div
-        v-for="(item, j) in newitem"
+        v-for="(item, j) in data_product"
         :key="j"
         class="w-full px-1 my-1 md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3"
       >
