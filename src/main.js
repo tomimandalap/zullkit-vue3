@@ -9,8 +9,10 @@ import './assets/css/styles.css'
 import 'aos/dist/aos.css'
 
 AOS.init({
-  duration: 300,
-  easing: 'ease',
+  easing: 'ease-out-cubic',
+  once: true,
+  offset: 50,
+  delay: 50,
 })
 
 const app = createApp(App)

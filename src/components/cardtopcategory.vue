@@ -9,7 +9,10 @@ defineProps({
 })
 </script>
 <template>
-  <div class="overflow-hidden border border-gray-200 rounded-xl">
+  <div
+    data-aos="zoom-in"
+    class="overflow-hidden border border-gray-200 rounded-xl"
+  >
     <RouterLink to="/web/detail">
       <div class="m-4 overflow-hidden rounded-xl">
         <img
