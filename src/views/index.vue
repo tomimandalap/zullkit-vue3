@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue'
+import { onMounted, computed, watch } from 'vue'
 import { useProductsStore } from '@/stores/products'
 import { createToaster } from '@meforma/vue-toaster'
 
@@ -95,7 +95,7 @@ onMounted(() => {
 
   <div class="container px-4 mx-auto my-16 md:px-12">
     <h2 class="mb-4 text-xl font-medium md:mb-0 md:text-lg">Top Categories</h2>
-    <div class="flex flex-wrap -mx-1 lg:-mx-4">
+    <div v-if="data_category.length" class="flex flex-wrap -mx-1 lg:-mx-4">
       <div
         v-for="(list, i) in data_category"
         :key="i"
@@ -109,11 +109,18 @@ onMounted(() => {
         />
       </div>
     </div>
+    <div
+      v-else
+      class="flex flex-col items-center justify-center -mx-1 lg:-mx-4"
+    >
+      <img src="@/assets/img/nodata.svg" alt="nodata.svg" width="200" />
+      <h3 class="text-gray-400 my-5">- No result data -</h3>
+    </div>
   </div>
 
   <div class="container px-4 mx-auto my-16 md:px-12">
     <h2 class="mb-4 text-xl font-medium md:mb-0 md:text-lg">New Items</h2>
-    <div class="flex flex-wrap -mx-1 lg:-mx-4">
+    <div v-if="data_product.length" class="flex flex-wrap -mx-1 lg:-mx-4">
       <div
         v-for="(item, j) in data_product"
         :key="j"
@@ -121,11 +128,18 @@ onMounted(() => {
       >
         <Carditem
           :id="item.id"
-          :image="item.image"
-          :title="item.title"
-          :category="item.category"
+          :thumbnails="item.thumbnails"
+          :title="item.name"
+          :subtitle="item.subtitle"
         />
       </div>
+    </div>
+    <div
+      v-else
+      class="flex flex-col items-center justify-center -mx-1 lg:-mx-4"
+    >
+      <img src="@/assets/img/nodata.svg" alt="nodata.svg" width="200" />
+      <h3 class="text-gray-400 my-5">- No result data -</h3>
     </div>
   </div>
 </template>

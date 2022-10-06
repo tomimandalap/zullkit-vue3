@@ -4,6 +4,7 @@ import AOS from 'aos'
 
 import App from './App.vue'
 import router from './router'
+import Toaster from '@meforma/vue-toaster'
 
 import './assets/css/styles.css'
 import 'aos/dist/aos.css'
@@ -16,8 +17,7 @@ AOS.init({
 })
 
 const app = createApp(App)
-
 app.use(createPinia())
 app.use(router)
-
+app.use(Toaster)
 app.mount('#app')
