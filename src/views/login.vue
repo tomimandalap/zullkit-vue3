@@ -16,7 +16,7 @@
       </div>
     </nav>
 
-    <div class="relative overflow-hidden bg-white">
+    <div data-aos="fade-up" class="relative overflow-hidden bg-white">
       <div class="mx-auto max-w-7xl">
         <div
           class="flex flex-col items-center w-full min-h-screen sm:pt-6 justify-center"
