@@ -1,6 +1,6 @@
 <script setup>
 import CardTop from '@/components/cardtopcategory.vue'
-import NewItems from '@/components/newitems.vue'
+import Carditem from '@/components/carditem.vue'
 import { ref } from 'vue'
 
 const topitems = ref([
@@ -27,6 +27,27 @@ const topitems = ref([
     image: 'categories-4.jpg',
     title: 'Website UI Kit',
     point: 4500,
+  },
+])
+
+const newitem = ref([
+  {
+    id: 1,
+    image: 'items-1.jpg',
+    title: 'Mobile UI Kit',
+    category: 'Mobile UI Kit',
+  },
+  {
+    id: 2,
+    image: 'items-2.jpg',
+    title: 'Online Doctor Consultation',
+    category: 'Website UI Kit',
+  },
+  {
+    id: 3,
+    image: 'items-3.jpg',
+    title: 'Banking Crypto',
+    category: 'Mobile UI Kit',
   },
 ])
 </script>
@@ -92,5 +113,20 @@ const topitems = ref([
     </div>
   </div>
 
-  <NewItems />
+  <div class="container px-4 mx-auto my-16 md:px-12">
+    <h2 class="mb-4 text-xl font-medium md:mb-0 md:text-lg">New Items</h2>
+    <div class="flex flex-wrap -mx-1 lg:-mx-4">
+      <div
+        v-for="(item, j) in newitem"
+        :key="j"
+        class="w-full px-1 my-1 md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3"
+      >
+        <Carditem
+          :image="item.image"
+          :title="item.title"
+          :category="item.category"
+        />
+      </div>
+    </div>
+  </div>
 </template>
