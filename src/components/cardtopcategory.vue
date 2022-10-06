@@ -3,6 +3,7 @@ import convert from '@/utils/convert'
 const { digitAmount } = convert
 
 defineProps({
+  id: Number,
   image: String,
   title: String,
   point: Number,
@@ -13,7 +14,7 @@ defineProps({
     data-aos="zoom-in"
     class="overflow-hidden border border-gray-200 rounded-xl"
   >
-    <RouterLink to="/web/detail">
+    <RouterLink :to="`/web/detail/${id}`">
       <div class="m-4 overflow-hidden rounded-xl">
         <img
           alt="Placeholder"
