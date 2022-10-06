@@ -1,9 +1,9 @@
 <script setup>
 defineProps({
   id: Number,
-  image: String,
+  thumbnails: String,
   title: String,
-  category: String,
+  subtitle: String,
 })
 </script>
 
@@ -17,7 +17,7 @@ defineProps({
         <img
           alt="Placeholder"
           class="block w-full h-auto"
-          :src="`src/assets/img/${image}`"
+          :src="`${thumbnails}`"
         />
       </div>
     </RouterLink>
@@ -32,7 +32,7 @@ defineProps({
         </a>
       </h1>
       <span class="block text-sm font-light text-gray-500 no-underline">
-        {{ category }}
+        {{ subtitle }}
       </span>
     </header>
   </div>
