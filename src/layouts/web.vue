@@ -1,6 +1,6 @@
 <script setup>
 import { onMounted, onUpdated, ref, computed, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import mixins from '@/utils/menu'
 import { useUserStore } from '@/stores/user'
 import { createToaster } from '@meforma/vue-toaster'
@@ -10,6 +10,7 @@ const { listMenu } = mixins.data()
 
 // declarations
 const route = useRoute()
+const router = useRouter()
 const namePath = ref('')
 const userStore = useUserStore()
 const toaster = createToaster({
@@ -18,6 +19,7 @@ const toaster = createToaster({
 
 // computed
 const user = computed(() => userStore.user)
+const isLoggedIn = computed(() => userStore.isLoggedIn)
 const alert_show = computed(() => userStore.alert_show)
 const alert_title = computed(() => userStore.alert_title)
 const alert_message = computed(() => userStore.alert_message)
@@ -35,6 +37,13 @@ const load = async () => {
   namePath.value = path
 
   await userStore.fetchUser()
+}
+
+const handleLogout = () => {
+  localStorage.removeItem('token_type')
+  localStorage.removeItem('access_token')
+  userStore.$reset()
+  router.go(-1)
 }
 
 // updated
@@ -65,45 +74,68 @@ onMounted(() => {
           />
         </RouterLink>
 
-        <button
-          data-collapse-toggle="navbar-default"
-          type="button"
-          class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-          aria-controls="navbar-default"
-          aria-expanded="false"
-        >
-          <span class="sr-only">Open main menu</span>
-          <svg
-            class="w-6 h-6"
-            aria-hidden="true"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-              clip-rule="evenodd"
-            ></path>
-          </svg>
-        </button>
+        <div class="flex items-center md:order-2">
+          <template v-if="!isLoggedIn">
+            <RouterLink
+              v-if="!user"
+              to="/login"
+              class="px-8 py-2 mt-2 mr-2 md:text-base text-sm font-medium text-black bg-gray-200 border border-transparent rounded-full hover:bg-gray-300 md:py-2 md:text-sm md:px-8 hover:shadow"
+            >
+              Sign In
+            </RouterLink>
 
-        <div class="md:order-2 md:block hidden">
-          <RouterLink
-            v-if="!user"
-            to="/login"
-            class="px-8 py-2 mt-2 mr-2 md:text-base text-sm font-medium text-black bg-gray-200 border border-transparent rounded-full hover:bg-gray-300 md:py-2 md:text-sm md:px-8 hover:shadow"
-          >
-            Sign In
-          </RouterLink>
+            <RouterLink
+              v-if="!user"
+              to="/register"
+              class="px-8 py-2 md:text-base text-sm font-medium text-white border border-transparent rounded-full bg-navy hover:bg-navy md:py-2 md:text-sm md:px-8 hover:shadow"
+            >
+              Sign Up
+            </RouterLink>
+          </template>
 
-          <RouterLink
-            v-if="!user"
-            to="/register"
-            class="px-8 py-2 md:text-base text-sm font-medium text-white border border-transparent rounded-full bg-navy hover:bg-navy md:py-2 md:text-sm md:px-8 hover:shadow"
+          <template v-else>
+            <div class="mr-2 text-sm font-regular">Halo, {{ user.name }}</div>
+            <button
+              v-if="isLoggedIn"
+              type="button"
+              class="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+              @click="handleLogout"
+            >
+              <span class="sr-only">Open user menu</span>
+              <img
+                class="w-8 h-8 rounded-full"
+                :src="user.profile_photo_url"
+                alt="user photo"
+              />
+            </button>
+          </template>
+
+          <button
+            data-collapse-toggle="navbar-default"
+            type="button"
+            class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            aria-controls="navbar-default"
+            aria-expanded="false"
           >
-            Sign Up
-          </RouterLink>
+            <span class="sr-only">Open main menu</span>
+            <svg
+              class="w-6 h-6"
+              aria-hidden="true"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- <div class="md:order-2 md:block hidden">
+          
 
           <div v-if="user" class="flex items-center justify-center space-x-4">
             <div class="font-medium dark:text-white">
@@ -115,7 +147,7 @@ onMounted(() => {
               TM
             </div>
           </div>
-        </div>
+        </div> -->
 
         <div
           class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"

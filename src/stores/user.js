@@ -8,7 +8,10 @@ export const useUserStore = defineStore({
     alert_title: '',
     alert_message: '',
   }),
-  getters: {},
+  getters: {
+    isLoggedIn: (state) => state.user !== false,
+    getUser: (state) => state.user,
+  },
   actions: {
     fetchUser() {
       const headers = {
@@ -26,6 +29,7 @@ export const useUserStore = defineStore({
         .catch((err) => {
           console.error(err)
           const code = Number(err.response?.status)
+          this.user = false
 
           if (code != 401) {
             this.alert_show = true
