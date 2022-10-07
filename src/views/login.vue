@@ -1,11 +1,77 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
+import { createToaster } from '@meforma/vue-toaster'
+import useVuelidate from '@vuelidate/core'
+import { required, email, minLength, helpers } from '@vuelidate/validators'
+
+// declarations
+const userStore = useUserStore()
+const router = useRouter()
+const loading = ref(false)
+const toaster = createToaster({
+  position: 'top-right',
+})
 const form = ref({
   email: '',
   password: '',
 })
-const handleSubmit = () => {
-  console.log('THIS', form.value)
+
+// computed
+const alert_show = computed(() => userStore.alert_show)
+const alert_title = computed(() => userStore.alert_title)
+const alert_message = computed(() => userStore.alert_message)
+
+// watch
+watch(alert_show, (val) => {
+  if (val) {
+    toaster.error(`[${alert_title.value}] <br/> ${alert_message.value}`)
+  }
+
+  userStore.$reset()
+})
+
+// validationds vuelidate
+const messageRequire = 'Field is required'
+const messageEmail = 'Email invalid'
+const messageMinLength = ($params) => {
+  return `Minium input ${$params.min} digit`
+}
+const validations = computed(() => {
+  return {
+    email: {
+      required: helpers.withMessage(messageRequire, required),
+      email: helpers.withMessage(messageEmail, email),
+    },
+    password: {
+      required: helpers.withMessage(messageRequire, required),
+      minLength: helpers.withMessage(
+        ({ $params }) => messageMinLength($params),
+        minLength(8),
+      ),
+    },
+  }
+})
+
+const v$ = useVuelidate(validations, form)
+
+// methods
+const handleSubmit = async () => {
+  v$.value.$validate()
+  if (v$.value.$error) return
+
+  loading.value = true
+  const res = await userStore.login(form.value)
+
+  if (res) {
+    form.value.email = ''
+    form.value.password = ''
+
+    await userStore.fetchUser()
+    router.push('/web')
+  }
+  loading.value = false
 }
 </script>
 <template>
@@ -46,6 +112,9 @@ const handleSubmit = () => {
                   name="email"
                   class="block w-full py-3 mt-2 border border-gray-300 rounded-full shadow-sm px-7 focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 disabled:bg-gray-100"
                 />
+                <span v-if="v$.email.$error" class="text-red-700 text-xs">
+                  {{ v$.email.$errors[0].$message }}
+                </span>
               </div>
               <div class="mb-4">
                 <label class="block mb-1" for="password">Password</label>
@@ -57,6 +126,9 @@ const handleSubmit = () => {
                   name="password"
                   class="block w-full py-3 mt-2 border border-gray-300 rounded-full shadow-sm px-7 focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 disabled:bg-gray-100"
                 />
+                <span v-if="v$.password.$error" class="text-red-700 text-xs">
+                  {{ v$.password.$errors[0].$message }}
+                </span>
               </div>
               <div class="mt-6">
                 <button

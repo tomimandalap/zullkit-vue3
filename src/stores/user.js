@@ -18,11 +18,10 @@ export const useUserStore = defineStore({
           localStorage.getItem('access_token'),
       }
       axios
-        .get(`${import.meta.env.VITE_API_ENDPOINT}/user`, headers)
+        .get(`${import.meta.env.VITE_API_ENDPOINT}/user`, { headers })
         .then((res) => {
-          console.log('RES', res)
-          // const result = res.data.data.data
-          // this.data_product = result
+          const result = res.data.data
+          this.user = result
         })
         .catch((err) => {
           console.error(err)
@@ -49,6 +48,23 @@ export const useUserStore = defineStore({
           this.alert_show = true
           this.alert_title = code
           this.alert_message = 'Oops, Register went wrong!'
+          return false
+        })
+    },
+    login(params) {
+      return axios
+        .post(`${import.meta.env.VITE_API_ENDPOINT}/login`, params)
+        .then((res) => {
+          localStorage.setItem('access_token', res.data.data.access_token)
+          localStorage.setItem('token_type', res.data.data.token_type)
+          return true
+        })
+        .catch((err) => {
+          console.error(err)
+          const code = Number(err.response?.status)
+          this.alert_show = true
+          this.alert_title = code
+          this.alert_message = 'Oops, Login went wrong!'
           return false
         })
     },
