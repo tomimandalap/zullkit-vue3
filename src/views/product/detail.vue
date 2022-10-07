@@ -2,15 +2,18 @@
 import { onMounted, computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useProductsStore } from '@/stores/products'
+import { useUserStore } from '@/stores/user'
 
 // declarations
 const productsStore = useProductsStore()
+const userStore = useUserStore()
 const thumbnail = ref('')
 const route = useRoute()
 const id = ref(null)
 
 // computed
 const product_detail = computed(() => productsStore.product_detail)
+const getUser = computed(() => userStore.getUser)
 const features = computed(() => productsStore.features?.split(','))
 const is_figma = computed(() => productsStore.is_figma === 1)
 const is_sketch = computed(() => productsStore.is_sketch === 1)
@@ -108,19 +111,22 @@ onMounted(() => {
                 </li>
               </ul>
             </div>
-            <!-- <a
-              v-if="user.data.subscription.length > 0"
-              :href="item.file"
-              class="inline-flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-full hover:bg-indigo-700 md:py-2 md:text-md md:px-10 hover:shadow"
-            >
-              Download Now
-            </a> -->
-            <RouterLink
-              to="/web/pricing"
-              class="inline-flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-full hover:bg-indigo-700 md:py-2 md:text-md md:px-10 hover:shadow"
-            >
-              Subscribe
-            </RouterLink>
+            <div>
+              <a
+                v-if="getUser && getUser.subscription.length"
+                :href="product_detail.file"
+                class="inline-flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-full hover:bg-indigo-700 md:py-2 md:text-md md:px-10 hover:shadow"
+              >
+                Download Now
+              </a>
+              <RouterLink
+                v-else
+                to="/web/pricing"
+                class="inline-flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-full hover:bg-indigo-700 md:py-2 md:text-md md:px-10 hover:shadow"
+              >
+                Subscribe
+              </RouterLink>
+            </div>
           </div>
         </div>
       </aside>
