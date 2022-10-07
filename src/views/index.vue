@@ -30,6 +30,7 @@ watch(alert_show, (val) => {
   if (val) {
     toaster.error(`[${alert_title.value}] <br/> ${alert_message.value}`)
   }
+  productsStore.$reset()
 })
 
 // methods
