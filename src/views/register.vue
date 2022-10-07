@@ -1,13 +1,83 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
+import { createToaster } from '@meforma/vue-toaster'
+import useVuelidate from '@vuelidate/core'
+import { required, email, minLength, helpers } from '@vuelidate/validators'
+
+// declarations
+const userStore = useUserStore()
+const router = useRouter()
+const loading = ref(false)
+const toaster = createToaster({
+  position: 'top-right',
+})
 const form = ref({
   name: '',
   email: '',
   password: '',
+  title: 'Desaigner',
 })
 
-const handleSubmit = () => {
-  console.log('THIS', form.value)
+// computed
+const alert_show = computed(() => userStore.alert_show)
+const alert_title = computed(() => userStore.alert_title)
+const alert_message = computed(() => userStore.alert_message)
+
+// watch
+watch(alert_show, (val) => {
+  if (val) {
+    toaster.error(`[${alert_title.value}] <br/> ${alert_message.value}`)
+  }
+})
+// validationds vuelidate
+const messageRequire = 'Field is required'
+const messageEmail = 'Email invalid'
+const messageMinLength = ($params) => {
+  return `Minium input ${$params.min} digit`
+}
+const validations = computed(() => {
+  return {
+    name: {
+      required: helpers.withMessage(messageRequire, required),
+      minLength: helpers.withMessage(
+        ({ $params }) => messageMinLength($params),
+        minLength(4),
+      ),
+    },
+    email: {
+      required: helpers.withMessage(messageRequire, required),
+      email: helpers.withMessage(messageEmail, email),
+    },
+    password: {
+      required: helpers.withMessage(messageRequire, required),
+      minLength: helpers.withMessage(
+        ({ $params }) => messageMinLength($params),
+        minLength(8),
+      ),
+    },
+  }
+})
+
+const v$ = useVuelidate(validations, form)
+// methods
+const handleSubmit = async () => {
+  v$.value.$validate()
+  if (v$.value.$error) return
+
+  loading.value = true
+  const res = await userStore.register(form.value)
+
+  if (res) {
+    form.value.name = ''
+    form.value.email = ''
+    form.value.password = ''
+
+    router.push('/login')
+  }
+
+  loading.value = false
 }
 </script>
 <template>
@@ -101,6 +171,9 @@ const handleSubmit = () => {
                       name="name"
                       class="block w-full py-3 mt-2 border border-gray-300 rounded-full shadow-sm px-7 focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 disabled:bg-gray-100"
                     />
+                    <span v-if="v$.name.$error" class="text-red-700 text-xs">
+                      {{ v$.name.$errors[0].$message }}
+                    </span>
                   </div>
                   <div class="mb-4">
                     <label class="block mb-1" for="email">Email Address</label>
@@ -112,6 +185,9 @@ const handleSubmit = () => {
                       name="email"
                       class="block w-full py-3 mt-2 border border-gray-300 rounded-full shadow-sm px-7 focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 disabled:bg-gray-100"
                     />
+                    <span v-if="v$.email.$error" class="text-red-700 text-xs">
+                      {{ v$.email.$errors[0].$message }}
+                    </span>
                   </div>
                   <div class="mb-4">
                     <label class="block mb-1" for="password">Password</label>
@@ -123,13 +199,19 @@ const handleSubmit = () => {
                       name="password"
                       class="block w-full py-3 mt-2 border border-gray-300 rounded-full shadow-sm px-7 focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 disabled:bg-gray-100"
                     />
+                    <span
+                      v-if="v$.password.$error"
+                      class="text-red-700 text-xs"
+                    >
+                      {{ v$.password.$errors[0].$message }}
+                    </span>
                   </div>
                   <div class="mt-6">
                     <button
                       type="submit"
                       class="inline-flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-full hover:bg-indigo-700 md:py-2 md:text-lg md:px-10 hover:shadow"
                     >
-                      Continue Sign Up
+                      {{ loading ? 'Loading...' : 'Continue Sign Up' }}
                     </button>
                     <RouterLink
                       to="/login"
