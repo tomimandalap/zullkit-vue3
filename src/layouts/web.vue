@@ -80,7 +80,7 @@ onMounted(() => {
             <RouterLink
               v-if="!user"
               to="/login"
-              class="px-8 py-2 mt-2 mr-2 md:text-base text-sm font-medium text-black bg-gray-200 border border-transparent rounded-full hover:bg-gray-300 md:py-2 md:text-sm md:px-8 hover:shadow"
+              class="px-8 py-2 mr-2 md:text-base text-sm font-medium text-black bg-gray-200 border border-transparent rounded-full hover:bg-gray-300 md:py-2 md:text-sm md:px-8 hover:shadow"
             >
               Sign In
             </RouterLink>
@@ -134,21 +134,6 @@ onMounted(() => {
             </svg>
           </button>
         </div>
-
-        <!-- <div class="md:order-2 md:block hidden">
-          
-
-          <div v-if="user" class="flex items-center justify-center space-x-4">
-            <div class="font-medium dark:text-white">
-              <div>Tomi Mandala Putra</div>
-            </div>
-            <div
-              class="w-10 h-10 bg-purple-700 text-white rounded-full text-md flex items-center justify-center"
-            >
-              TM
-            </div>
-          </div>
-        </div> -->
 
         <div
           class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
