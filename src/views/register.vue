@@ -74,7 +74,8 @@ const handleSubmit = async () => {
     form.value.email = ''
     form.value.password = ''
 
-    router.push('/login')
+    await userStore.fetchUser()
+    router.push('/web')
   }
 
   loading.value = false

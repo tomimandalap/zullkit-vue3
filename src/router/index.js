@@ -97,7 +97,7 @@ router.beforeEach((to, from, next) => {
 
   const { auth } = to.meta
   const isWeb = to.path.includes('web')
-  const isToken = !!JSON.parse(localStorage.getItem('access_token'))
+  const isToken = localStorage.getItem('access_token')
 
   if (auth) {
     if (isToken) next()
