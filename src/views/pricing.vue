@@ -1,8 +1,36 @@
 <script setup>
-const checkout = (price) => {
-  console.log('THIS', price)
+import { computed, watch } from 'vue'
+import { useCheckoutStore } from '@/stores/checkout'
+import { createToaster } from '@meforma/vue-toaster'
+
+// declarations
+const checkoutStore = useCheckoutStore()
+const toaster = createToaster({
+  position: 'top-right',
+})
+
+// computed
+const payment_url = computed(() => checkoutStore.payment_url)
+const alert_show = computed(() => checkoutStore.alert_show)
+const alert_title = computed(() => checkoutStore.alert_title)
+const alert_message = computed(() => checkoutStore.alert_message)
+
+// watch
+watch(alert_show, (val) => {
+  if (val) {
+    toaster.error(`[${alert_title.value}] <br/> ${alert_message.value}`)
+  }
+
+  checkoutStore.$reset()
+})
+
+// methods
+const checkout = async (price) => {
+  const res = await checkoutStore.checkOut(price)
+  if (res) window.location.href = payment_url.value
 }
 </script>
+
 <template>
   <main>
     <div class="relative overflow-hidden bg-white">
