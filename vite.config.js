@@ -24,7 +24,7 @@ export default ({ mode }) => {
     },
     server: {
       proxy: {
-        '/api-web': {
+        '/api-web/.*': {
           target: env.VITE_API_ENDPOINT,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api-web/, ''),
