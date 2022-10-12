@@ -25,7 +25,7 @@ export const useCheckoutStore = defineStore({
       }
 
       return axios
-        .post(`/api-web/checkout`, data, {
+        .post(`${import.meta.env.VITE_API_ENDPOINT}/checkout`, data, {
           headers,
         })
         .then((res) => {
