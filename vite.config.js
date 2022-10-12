@@ -29,11 +29,10 @@ export default ({ mode }) => {
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api-web/, ''),
         },
-      },
-      // Proxying websockets or socket.io
-      '/socket.io': {
-        target: 'ws://localhost:3000',
-        ws: true,
+        '/socket.io': {
+          target: 'ws://localhost:3000',
+          ws: true,
+        },
       },
     },
   })
