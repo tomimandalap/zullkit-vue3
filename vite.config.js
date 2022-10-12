@@ -6,22 +6,24 @@ import vue from '@vitejs/plugin-vue'
 // https://vitejs.dev/config/
 export default defineConfig(async ({ command, mode }) => {
   const env = await loadEnv(mode, process.cwd(), '')
-  return {
-    plugins: [vue()],
-    resolve: {
-      alias: {
-        '@': fileURLToPath(new URL('./src', import.meta.url)),
-      },
-    },
-    server: {
-      proxy: {
-        '^/api-web/.*': {
-          target: env.VITE_API_ENDPOINT,
-          changeOrigin: true,
-          ws: true,
-          rewrite: (path) => path.replace(/^\/api-web/, ''),
+  if (['serve', 'build'].includes(command)) {
+    return {
+      plugins: [vue()],
+      resolve: {
+        alias: {
+          '@': fileURLToPath(new URL('./src', import.meta.url)),
         },
       },
-    },
+      server: {
+        proxy: {
+          '^/api-web/.*': {
+            target: env.VITE_API_ENDPOINT,
+            changeOrigin: true,
+            ws: true,
+            rewrite: (path) => path.replace(/^\/api-web/, ''),
+          },
+        },
+      },
+    }
   }
 })
