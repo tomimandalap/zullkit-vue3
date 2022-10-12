@@ -6,7 +6,7 @@ import vue from '@vitejs/plugin-vue'
 // https://vitejs.dev/config/
 export default defineConfig(async ({ command, mode }) => {
   const env = await loadEnv(mode, process.cwd(), '')
-  if (['serve', 'build'].includes(command)) {
+  if (['serve'].includes(command)) {
     return {
       plugins: [vue()],
       resolve: {
@@ -17,13 +17,19 @@ export default defineConfig(async ({ command, mode }) => {
       server: {
         proxy: {
           '^/api-web/.*': {
-            target:
-              'https://zullkit-backend.buildwithangga.id/api' ||
-              env.VITE_API_ENDPOINT,
+            target: env.VITE_API_ENDPOINT,
             changeOrigin: true,
-            ws: true,
             rewrite: (path) => path.replace(/^\/api-web/, ''),
           },
+        },
+      },
+    }
+  } else {
+    return {
+      plugins: [vue()],
+      resolve: {
+        alias: {
+          '@': fileURLToPath(new URL('./src', import.meta.url)),
         },
       },
     }
