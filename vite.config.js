@@ -4,9 +4,9 @@ import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command, mode }) => {
-  const env = loadEnv(mode, process.cwd())
-  const data = {
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '')
+  return {
     plugins: [vue()],
     resolve: {
       alias: {
@@ -22,11 +22,5 @@ export default defineConfig(({ command, mode }) => {
         },
       },
     },
-  }
-
-  if (['serve'].includes(command)) {
-    return data
-  } else {
-    return data
   }
 })
