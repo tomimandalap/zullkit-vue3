@@ -24,11 +24,16 @@ export default ({ mode }) => {
     },
     server: {
       proxy: {
-        '/api-web/.*': {
-          target: env.VITE_API_ENDPOINT,
+        '/api-web/': {
+          target: env?.VITE_API_ENDPOINT,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api-web/, ''),
         },
+      },
+      // Proxying websockets or socket.io
+      '/socket.io': {
+        target: 'ws://localhost:3000',
+        ws: true,
       },
     },
   })
