@@ -21,7 +21,7 @@ export const useUserStore = defineStore({
           localStorage.getItem('access_token'),
       }
       axios
-        .get(`${import.meta.env.VITE_API_ENDPOINT}/user`, { headers })
+        .get(`/api-web/user`, { headers })
         .then((res) => {
           const result = res.data.data
           this.user = result
@@ -40,7 +40,7 @@ export const useUserStore = defineStore({
     },
     register(params) {
       return axios
-        .post(`${import.meta.env.VITE_API_ENDPOINT}/register`, params)
+        .post(`/api-web/register`, params)
         .then((res) => {
           localStorage.setItem('access_token', res.data.data.access_token)
           localStorage.setItem('token_type', res.data.data.token_type)
@@ -57,7 +57,7 @@ export const useUserStore = defineStore({
     },
     login(params) {
       return axios
-        .post(`${import.meta.env.VITE_API_ENDPOINT}/login`, params)
+        .post(`/api-web/login`, params)
         .then((res) => {
           localStorage.setItem('access_token', res.data.data.access_token)
           localStorage.setItem('token_type', res.data.data.token_type)
