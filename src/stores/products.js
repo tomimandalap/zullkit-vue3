@@ -21,7 +21,7 @@ export const useProductsStore = defineStore({
   actions: {
     getCategory(params) {
       return axios
-        .get(`${import.meta.env.VITE_API_ENDPOINT}/categories`, { params })
+        .get(`/api-web/categories`, { params })
         .then((res) => {
           const result = res.data.data?.data
 
@@ -40,7 +40,7 @@ export const useProductsStore = defineStore({
     },
     getProducts(params) {
       return axios
-        .get(`${import.meta.env.VITE_API_ENDPOINT}/products`, { params })
+        .get(`/api-web/products`, { params })
         .then((res) => {
           const result = res.data.data?.data
 
