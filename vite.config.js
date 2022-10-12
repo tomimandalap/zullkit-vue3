@@ -17,7 +17,9 @@ export default defineConfig(async ({ command, mode }) => {
       server: {
         proxy: {
           '^/api-web/.*': {
-            target: env.VITE_API_ENDPOINT,
+            target:
+              'https://zullkit-backend.buildwithangga.id/api' ||
+              env.VITE_API_ENDPOINT,
             changeOrigin: true,
             ws: true,
             rewrite: (path) => path.replace(/^\/api-web/, ''),
