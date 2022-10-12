@@ -16,6 +16,7 @@
     "@vuelidate/validators": "^2.0.0",
     "aos": "^2.3.4",
     "axios": "^1.0.0",
+    "cors": "^2.8.5",
     "pinia": "^2.0.21",
     "stylus": "^0.59.0",
     "stylus-loader": "^3.0.2",
