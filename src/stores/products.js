@@ -21,7 +21,7 @@ export const useProductsStore = defineStore({
   actions: {
     getCategory(params) {
       return axios
-        .get(`/api-web/categories`, { params })
+        .get(`/api/categories`, { params })
         .then((res) => {
           const result = res.data.data?.data
 
@@ -40,7 +40,7 @@ export const useProductsStore = defineStore({
     },
     getProducts(params) {
       return axios
-        .get(`/api-web/products`, { params })
+        .get(`/api/products`, { params })
         .then((res) => {
           const result = res.data.data?.data
 

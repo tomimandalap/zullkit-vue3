@@ -25,7 +25,7 @@ export const useCheckoutStore = defineStore({
       }
 
       return axios
-        .post(`/api-web/checkout`, data, {
+        .post(`/api/checkout`, data, {
           headers,
         })
         .then((res) => {
