@@ -5,7 +5,6 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ command, mode }) => {
-  console.log('HALOHALO', mode)
   const env = await loadEnv(mode, process.cwd(), 'VITE_API_ENDPOINT')
   if (['serve', 'build'].includes(command)) {
     return {

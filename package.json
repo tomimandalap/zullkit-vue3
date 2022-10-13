@@ -5,8 +5,8 @@
   "author": "tommymandalaputra",
   "private": true,
   "scripts": {
-    "dev": "vite --port 3000",
-    "build": "vite build",
+    "dev": "vite --port 3000 --host",
+    "build": "vite build --port 3000",
     "preview": "vite preview --port 4173",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
