@@ -2,7 +2,7 @@
 force = true
 from = '/api/*'
 status = 200
-to = 'https://zullkit.netlify.app/:splat'
+to = 'https://zullkit-backend.buildwithangga.id/api/:splat'
 
 [[redirects]]
 from = '/*'
