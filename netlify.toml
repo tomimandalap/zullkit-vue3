@@ -1,4 +1,18 @@
 [[redirects]]
-from = “/*”
-to = “/index.html”
+force = true
+from = '/api/*'
 status = 200
+to = 'https://zullkit-backend.buildwithangga.id/api:splat'
+
+[[redirects]]
+from = '/*'
+status = 200
+to = '/index.html'
+
+[build]
+command = 'yarn build'
+environment = {NODE_VERSION = '14'}
+publish = 'dist'
+
+[dev]
+autoLaunch = false
