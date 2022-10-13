@@ -16,7 +16,7 @@ export default defineConfig(async ({ command, mode }) => {
       },
       server: {
         proxy: {
-          '/api-web': {
+          '^/api-web/.*': {
             target: env.VITE_API_ENDPOINT,
             changeOrigin: true,
             secure: false,
