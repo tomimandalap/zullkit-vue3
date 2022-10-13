@@ -30,3 +30,4 @@ coverage
 # Enviroment
 .env
 .env.production
+.env.staging
