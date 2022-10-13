@@ -29,3 +29,4 @@ coverage
 
 # Enviroment
 .env
+.env.production
