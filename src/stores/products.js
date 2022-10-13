@@ -31,7 +31,7 @@ export const useProductsStore = defineStore({
           return true
         })
         .catch((err) => {
-          console.error(err)
+          // console.error(err)
           this.alert_show = true
           this.alert_title = err.response?.status
           this.alert_message = 'Oops, Categories went wrong!'
@@ -49,7 +49,7 @@ export const useProductsStore = defineStore({
           return true
         })
         .catch((err) => {
-          console.error(err)
+          // console.error(err)
           this.alert_show = true
           this.alert_title = err.response?.status
           this.alert_message = 'Oops, Products went wrong!'

@@ -14,20 +14,14 @@ export const useUserStore = defineStore({
   },
   actions: {
     fetchUser() {
-      const headers = {
-        Authorization:
-          localStorage.getItem('token_type') +
-          ' ' +
-          localStorage.getItem('access_token'),
-      }
       axios
-        .get(`/api/user`, { headers })
+        .get(`/api/user`)
         .then((res) => {
           const result = res.data.data
           this.user = result
         })
         .catch((err) => {
-          console.error(err)
+          // console.error(err)
           const code = Number(err.response?.status)
           this.user = false
 
@@ -43,11 +37,11 @@ export const useUserStore = defineStore({
         .post(`/api/register`, params)
         .then((res) => {
           localStorage.setItem('access_token', res.data.data.access_token)
-          localStorage.setItem('token_type', res.data.data.token_type)
+          // localStorage.setItem('token_type', res.data.data.token_type)
           return true
         })
         .catch((err) => {
-          console.error(err)
+          // console.error(err)
           const code = Number(err.response?.status)
           this.alert_show = true
           this.alert_title = code
@@ -60,11 +54,11 @@ export const useUserStore = defineStore({
         .post(`/api/login`, params)
         .then((res) => {
           localStorage.setItem('access_token', res.data.data.access_token)
-          localStorage.setItem('token_type', res.data.data.token_type)
+          // localStorage.setItem('token_type', res.data.data.token_type)
           return true
         })
         .catch((err) => {
-          console.error(err)
+          // console.error(err)
           const code = Number(err.response?.status)
           this.alert_show = true
           this.alert_title = code

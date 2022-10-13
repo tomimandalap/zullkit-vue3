@@ -17,24 +17,16 @@ export const useCheckoutStore = defineStore({
         payment_total: price,
         payment_status: 'PENDING',
       }
-      const headers = {
-        Authorization:
-          localStorage.getItem('token_type') +
-          ' ' +
-          localStorage.getItem('access_token'),
-      }
 
       return axios
-        .post(`/api/checkout`, data, {
-          headers,
-        })
+        .post(`/api/checkout`, data)
         .then((res) => {
           const result = res.data.data
           this.data = result
           return true
         })
         .catch((err) => {
-          console.error(err)
+          // console.error(err)
           this.alert_show = true
           this.alert_title = err.response?.status
           this.alert_message = 'Oops, Checkout went wrong!'
