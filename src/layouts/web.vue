@@ -12,6 +12,7 @@ const { listMenu } = mixins.data()
 const route = useRoute()
 const router = useRouter()
 const namePath = ref('')
+const showMenu = ref(false)
 const userStore = useUserStore()
 const toaster = createToaster({
   position: 'top-right',
@@ -75,7 +76,7 @@ onMounted(() => {
           />
         </RouterLink>
 
-        <div class="flex items-center md:order-2">
+        <div :class="['flex items-center md:order-2', { 'mb-2': !hidden }]">
           <template v-if="!isLoggedIn">
             <RouterLink
               v-if="!user"
@@ -117,6 +118,7 @@ onMounted(() => {
             class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
             aria-controls="navbar-default"
             aria-expanded="false"
+            @click="showMenu = !showMenu"
           >
             <span class="sr-only">Open main menu</span>
             <svg
@@ -136,11 +138,14 @@ onMounted(() => {
         </div>
 
         <div
-          class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+          :class="[
+            'items-center justify-between bg-gray-50 w-full md:flex md:w-auto md:order-1',
+            { hidden: !showMenu },
+          ]"
           id="navbar-default"
         >
           <ul
-            class="flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-regular"
+            class="flex flex-col md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-regular"
           >
             <li v-for="(item, i) in listMenu" :key="i">
               <RouterLink
