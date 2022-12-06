@@ -14,6 +14,7 @@ const router = createRouter({
           beforeEnter: (to, from, next) => {
             next('/web')
           },
+          meta: { auth: false },
         },
         {
           path: 'login',
