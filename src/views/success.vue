@@ -15,7 +15,7 @@
           </p>
         </div>
         <RouterLink
-          to="/"
+          to="/web"
           class="px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-full hover:bg-indigo-700 md:py-2 md:text-lg md:px-10 hover:shadow"
         >
           Explore Now
