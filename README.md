@@ -1,6 +1,6 @@
 ### ```DESCRIPTION```
 
-Membuat website Zullkit untuk mengupgrade skill saya dengan belajar VUE 3 sebagai freamwork untuk frontend serta mengaplikasikan state management Pinia, composition API, router guard dan axios interseptors. Silahkan kunjungi website [ini](https://zullkit.netlify.app/).
+Membuat website Zullkit untuk mengupgrade skill saya dengan belajar VUE 3 sebagai freamwork untuk frontend serta mengaplikasikan state management Pinia, composition API, router guard dan axios interseptors. Silahkan kunjungi website [ini](https://zullkit.netlify.app/web/).
 
 ### ```Build with```
 - [Vue 3](https://vuejs.org/guide/introduction.html) The web framework used
