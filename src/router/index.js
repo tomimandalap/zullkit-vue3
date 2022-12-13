@@ -11,8 +11,9 @@ const router = createRouter({
       children: [
         {
           path: '',
-          beforeEnter: (to, from, next) => {
-            next('/web')
+          component: () => import('../views/index.vue'),
+          beforeEnter: () => {
+            return '/web'
           },
           meta: { auth: false },
         },
@@ -43,7 +44,7 @@ const router = createRouter({
         {
           path: '',
           name: 'Home',
-          component: () => import('../views/index.vue'),
+          component: () => import('../views/home.vue'),
           meta: { auth: false },
         },
         {
